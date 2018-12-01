@@ -1,5 +1,5 @@
 export const isPromise = payload => {
-  return payload && typeof payload.then === 'function'
+  return payload && typeof payload.then === 'function';
 };
 
 export const middleware = store => next => action => {
@@ -11,10 +11,10 @@ export const middleware = store => next => action => {
   return action.payload
     .then(result => {
       store.dispatch({ type: 'LOAD_END' });
-      store.dispatch({ type: 'PROMISE_ACTION', payload: result });
+      next({ type: action.type, payload: result });
     })
     .catch(err => {
       store.dispatch({ type: 'LOAD_END' });
       store.dispatch({ type: 'ERROR', payload: err });
-    })
+    });
 };
